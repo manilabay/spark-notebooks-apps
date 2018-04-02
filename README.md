@@ -30,11 +30,98 @@ The basic programming steps to setup a Spark Streaming pipeline are:
 
 This guide have the focus in Spark programming so the infra required is out of scope but basically, you would need to setup your Spark cluster in your on-premise infrastructure or your Cloud provider following the Spark guides and choose a cluster manager fit with your strategy and your Architecture base: YARN, Mesos, Kubernetes. Also you will need install maven, sbt and pip in your CI system and setup the spark-submit in your scripts to chain and launch the Apps in the cluster. A good strategy will be run the builds, tests and executions within Docker containers (only if you have a good Docker experience or Docker experts in your team). Also if you are in a Event-Driven-Architecture stage you could use Kafka to produce and consume from/to another data systems.
 
-## Spark simple config & launch
+## Spark simple build, config & launch
+
+### build
+
+#### sbt
 
 ```console
-./bin/spark-submit --class "YourApp" --master local[4]   
+  sbt package
 ```
+
+#### maven
+
+```console
+  mvn package
+```
+
+For sure your build scripts will be more sophisticated in your CI, this isn't a build scope guide.
+
+### launch
+
+If you are running python Spark apps just replace the jar-file for your .py file in the argument path below.
+
+### run locally
+
+```console
+./bin/spark-submit --class "YourApp" --master local[8] /path/to/your/jar-file <your_app_arguments>
+```
+It runs the app in 8 threads, ideally set to the cores in your machine or following the sizing plan if you have multiple Spark Applications running at the same time.
+
+### run over your cluster
+
+#### Spark standalone cluster in client deploy mode
+
+```console
+./bin/spark-submit \
+  --master spark://your-spark-node:7077 \
+  --executor-memory 20G \
+  --total-executor-cores 100 \
+  /path/to/your/jar-file \
+  <your_app_arguments>
+```
+#### Run on a Spark standalone cluster in cluster deploy mode with supervise
+
+```console
+./bin/spark-submit \
+  --master spark://your-spark-node:7077 \
+  --deploy-mode cluster \
+  --supervise \
+  --executor-memory 20G \
+  --total-executor-cores 100 \
+  /path/to/your/jar-file \
+  <your_app_arguments>
+```
+
+#### Run on a YARN cluster
+
+```console
+export HADOOP_CONF_DIR=XXX
+./bin/spark-submit \
+  --master yarn \
+  --deploy-mode cluster \
+  --executor-memory 20G \
+  --num-executors 50 \
+  /path/to/your/jar-file \
+  <your_app_arguments>
+```
+#### Run on a Mesos cluster in cluster deploy mode with supervise
+
+```console
+./bin/spark-submit \
+  --master mesos://your-mesos-node:7077 \
+  --deploy-mode cluster \
+  --supervise \
+  --executor-memory 20G \
+  --total-executor-cores 100 \
+  /path/to/your/jar-file \
+  <your_app_arguments>
+```
+
+#### Run on a Kubernetes cluster in cluster deploy mode
+
+```console
+./bin/spark-submit \
+  --master k8s://your-mesos-node:443 \
+  --deploy-mode cluster \
+  --executor-memory 20G \
+  --num-executors 50 \
+  /path/to/your/jar-file \
+  <your_app_arguments>
+```
+
+
 
 ## Dependencies
 
