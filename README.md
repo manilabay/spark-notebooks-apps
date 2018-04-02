@@ -4,13 +4,13 @@ This repo is to refresh the author's Spark knowledge, to play a little bit again
 
 It will be an exercise to create and run simple Apps using Scala(with sbt), Python(with pip), Java(with maven), SQL, Parquet.
 
-## Spark programming ELI5 (Explain me Like I´m 5)
+# Spark programming ELI5 Explain me Like I am 5
 
 You must think about it as an extra layer to do your programmer life easier. Basically Spark programming is a chain of dots with instructions(aggregates, transformations, filters, etc) and every dot represent an input and output in a long data pipeline. Also you can extend your Spark programming using the typical objects and functions in every programming language with focus in data capabilities, for example in python it is common to develop Spark Apps using Python numpy and pandas library and mix with the Spark programming.
 
 To run programs through Spark pipeline you develop in your favourite or more adecuated language for every Use Case App you are developing and you just need to connect with Spark, instancing SparkSession, SparkContext, SparkConf, and so on.
 
-## Spark Streaming
+# Spark Streaming
 
 Basically Spark Streaming differ from Spark Core as it is an additional stage placed previously in the Data Pipeline which has the function to ingest a continuous dataflow and convert in a discretized dataflow (called DStream) formed by several data packages (called RDDs). What happened under the hoods really is, Spark Streaming distribute to the nodes(in-memory) and process a RDDs sequence. Each RDDs cycle is configured and processed by a time interval. It is a batch processing but setup automatically until a termination Signal is received.
 
@@ -52,7 +52,7 @@ For sure your build scripts will be more sophisticated in your CI, this isn't a 
 
 If you are running python Spark apps just replace the jar-file for your .py file in the argument path below.
 
-### run locally
+### run in local
 
 ```console
 ./bin/spark-submit --class "YourApp" --master local[8] /path/to/your/jar-file <your_app_arguments>
